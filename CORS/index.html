@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CORS</title>
+</head>
+<body>
+    <button>发送请求</button>
+    <script>
+        const btn = document.querySelector('button');
+        btn.addEventListener('click',function (){
+            const xhr=new XMLHttpRequest();
+            document.cookie="name=leslie";// cookie不能跨域
+            xhr.withCredentials=true;// 前端设置是否带cookie
+            xhr.open('PUT','http://127.0.0.1:8000/cors', true);
+            xhr.setRequestHeader('name','leslie');
+            xhr.send();
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState===4){
+                    if((xhr.status>=200 && xhr.status<300) || xhr.status === 304){
+                        console.log(xhr.response);
+                         //得到响应头，后台需设置Access-Control-Expose-Headers
+                        console.log(xhr.getResponseHeader('name'))
+                    }
+                }
+            }
+            
+
+        })
+
+    </script>
+</body>
+</html>
